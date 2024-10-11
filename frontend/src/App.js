@@ -34,7 +34,7 @@ const App = () => {
     setIsProcessing(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/allocate-ip', {
+      const response = await axios.post('http://13.233.229.1:5000/api/allocate-ip', {
         accessKeyId: slots.accessKeyId,
         secretAccessKey: slots.secretAccessKey,
         region: slots.region,
@@ -63,7 +63,7 @@ const App = () => {
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/status');
+        const response = await axios.get('http://13.233.229.1:5000/api/status');
         updateStatus(response.data);
       } catch (error) {
         console.error("Error fetching status:", error);
