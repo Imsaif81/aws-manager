@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const { EC2Client, AllocateAddressCommand, ReleaseAddressCommand, DescribeAddressesCommand } = require('@aws-sdk/client-ec2');
@@ -9,21 +10,9 @@ app.use(express.json());
 
 // Predefined list of allowed IP ranges (the first three octets of IP)
 const predefinedIPRanges = [
-  // Range A (3.x.x.x)
-  '43.204.6',
-  '43.204.10',
-  '43.204.11',
-  '43.204.16',
-  '43.204.17',
-  '43.204.21',
-  '43.205.28',
-  '43.205.57',
-  '43.205.71',
-  '43.205.190',
-  
- 
+  '43.204.6', '43.204.10', '43.204.11', '43.204.16', '43.204.17',
+  '43.204.21', '43.205.28', '43.205.57', '43.205.71', '43.205.190'
 ];
-
 
 // Store the current status for each session
 let statusStore = {
@@ -153,6 +142,14 @@ app.post('/api/allocate-ip', async (req, res) => {
 // API to get the current status
 app.get('/api/status', (req, res) => {
   res.status(200).json(statusStore);
+});
+
+// Serve static files from the frontend
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Catch-all to serve React app
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 // Start the server
